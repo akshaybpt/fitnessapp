@@ -3,17 +3,19 @@ import ExerciseItem from './ExerciseItem';
 import { options } from '../utils/fetch';
 import BodyPartExercise from './BodyPartExercise';
 import HorizontalScroll from './HorizontalScroll';
+import Spinner from './Spinner';
 
 
 const SearchExercise = () => {
 
   const useInitial = []
   const body = []
-  const url= 'https://exercisedb.p.rapidapi.com/exercises'
-  
+  const url = 'https://exercisedb.p.rapidapi.com/exercises'
+
   const [search, setSearch] = useState('')
   const [exercise, setExercise] = useState(body);
   const [bodyPart, setBodyPart] = useState(useInitial);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     bodyExercise();
@@ -23,19 +25,21 @@ const SearchExercise = () => {
   const bodyExercise = async () => {
     const response = await fetch(`${url}/bodyPartList`, options);
     const data = await response.json();
-     console.log(data);
+    console.log(data);
     setBodyPart(data);
   }
 
- 
+
   const bodypartClicked = (item) => {
     apiResponse(item);
   }
 
   const apiResponse = async (item) => {
+    setLoading(true);
     const response = await fetch(`${url}/bodyPart/${item}`, options);
     const data = await response.json();
     // // console.log(data);
+    setLoading(false);
     setExercise(data);
 
   }
@@ -49,21 +53,24 @@ const SearchExercise = () => {
     setSearch('');
   }
   const fetchApiResponse = async () => {
+    setLoading(true);
     const response = await fetch(`${url}`, options);
     const data = await response.json();
     // // console.log(data);
+
     const searchedData = data.filter((item) =>
-    item.name.toLowerCase().includes(search)
-    || item.target.toLowerCase().includes(search)
-    || item.equipment.toLowerCase().includes(search)
-    || item.bodyPart.toLowerCase().includes(search),
-  );
-// // console.log(searchedData);
-  setExercise(searchedData);
+      item.name.toLowerCase().includes(search)
+      || item.target.toLowerCase().includes(search)
+      || item.equipment.toLowerCase().includes(search)
+      || item.bodyPart.toLowerCase().includes(search),
+    );
+    // // console.log(searchedData);
+    setLoading(false);
+    setExercise(searchedData);
 
   }
 
-  const setId=(id)=>{
+  const setId = (id) => {
     // // console.log("id has been set" + id);
   }
   return (
@@ -78,24 +85,18 @@ const SearchExercise = () => {
             </form>
           </div>
         </div>
-       
       </div>
       <div className="container">
+
+        <HorizontalScroll bodyPart={bodyPart} bodypartClicked={bodypartClicked} />
        
-        <HorizontalScroll  bodyPart={bodyPart}  bodypartClicked={bodypartClicked} /> 
-          {/* {bodyPart.map((element , index) =>
-            <div className="col-md-3">
-              <div key={index}>
-                <BodyPartExercise element={element} bodypartClicked={bodypartClicked} />
-              </div>
-            </div>
-          )} */}
-        
       </div>
       <div className="container my-4">
         <h1>Showing Results </h1>
         <div className="row">
+
           {exercise.length === 0 && <h2 style={{ color: 'red' }}> Nothing to show </h2>}
+          {loading === true && <Spinner />}
           {exercise.map((element) => {
             return <div className='col-md-4' key={element.id} >
               <ExerciseItem name={element.name} bodyPart={element.bodyPart} id={element.id} setId={setId} equipment={element.equipment} gifUrl={element.gifUrl} target={element.target} />
@@ -103,7 +104,6 @@ const SearchExercise = () => {
           })}
         </div>
       </div>
-      
     </div>
   )
 }
