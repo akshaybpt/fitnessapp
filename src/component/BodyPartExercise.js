@@ -2,7 +2,7 @@ import React from 'react';
 import logo from '../assets/icons/gym.png'
 
 const BodyPartExercise = (props) => {
-    const { element, bodypartClicked,imgr} = props
+    const { element, bodypartClicked} = props
     const handelClick = () => {
         // // console.log("clicled " + element);
         bodypartClicked(element);

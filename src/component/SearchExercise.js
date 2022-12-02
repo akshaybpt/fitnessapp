@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ExerciseItem from './ExerciseItem';
 import { options } from '../utils/fetch';
-import BodyPartExercise from './BodyPartExercise';
 import HorizontalScroll from './HorizontalScroll';
 import Spinner from './Spinner';
 
