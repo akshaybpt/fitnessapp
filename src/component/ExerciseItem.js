@@ -6,7 +6,7 @@ const ExerciseItem = (props) => {
     const { bodyPart, equipment, gifUrl, name, target ,id,setId } = props;
 const handelClick=()=>{
 setId(id);
-console.log("clicked");
+// console.log("clicked");
 navigate(`/exercise/${id.toString()}`)
 }
     return (
@@ -15,7 +15,7 @@ navigate(`/exercise/${id.toString()}`)
                 <img src={gifUrl} className="card-img-top img-fluid" alt="..." style={{ height: "250px" }} />
                 <div className="card-body">
                     <Link className="card-title text-capitalize fs-3 fw-semibold " to ={`/exercise/${id.toString()}`} style={{ color: 'red' }}> {name}</Link>
-                    
+                    <br />
                     <p className="btn m-2 exerciseBtn text-capitalize"  > {target} </p>
                     <p className="btn m-2 exerciseBtn text-capitalize"  > {bodyPart} </p>
                     <p className="btn m-2 exerciseBtn text-capitalize"  >   {equipment} </p>
